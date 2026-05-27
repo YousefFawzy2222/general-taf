@@ -1,5 +1,6 @@
 package com.blazedemo.drivers;
 
+import com.blazedemo.utils.logs.LogsManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ThreadGuard;
 import utils.PropertyReader;
@@ -10,6 +11,7 @@ public class GUIDriver {
 
     public GUIDriver() {
         Browser browserType = Browser.valueOf(browser.toUpperCase());
+        LogsManager.info("Initializing driver for browser: " + browserType);
         AbstractDriver abstractDriver = browserType.getDriverFactory();
         WebDriver driver = ThreadGuard.protect(abstractDriver.createDriver());
         driverThreadLocal.set(driver);

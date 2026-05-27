@@ -1,5 +1,7 @@
-package com.blazedemo.utils;
+package com.blazedemo.utils.actions;
 
+import com.blazedemo.utils.WaitManager;
+import com.blazedemo.utils.logs.LogsManager;
 import org.openqa.selenium.*;
 
 import java.io.File;
@@ -23,6 +25,7 @@ public class ElementActions {
                         WebElement element = d.findElement(locator);
                         scrollToElementJS(locator);
                         element.click();
+                        LogsManager.info("Clicked on Element:" + locator);
                         return true;
                     } catch (Exception e) {
                         return false;
@@ -41,6 +44,7 @@ public class ElementActions {
                         scrollToElementJS(locator);
                         element.clear();
                         element.sendKeys(text);
+                        LogsManager.info("Typed text '" + text + "' into Element: " + locator);
                         return true;
                     } catch (Exception e) {
                         return false;
@@ -59,6 +63,7 @@ public class ElementActions {
                         WebElement element = d.findElement(locator);
                         scrollToElementJS(locator); // js scrolling -> force injection
                         String msg = element.getText();
+                        LogsManager.info("Retried text'" + msg + "' from Element: " + locator);
                         return !msg.isEmpty() ? msg : null;
                     } catch (Exception e) {
                         return null;
@@ -89,6 +94,7 @@ public class ElementActions {
                         WebElement element = d.findElement(locator);
                         scrollToElementJS(locator);
                         element.sendKeys(fileAbsolute);
+                        LogsManager.info("Uploaded file '" + fileAbsolute + "' to Element: " + locator);
                         return true;
                     } catch (Exception e) {
                         return false;

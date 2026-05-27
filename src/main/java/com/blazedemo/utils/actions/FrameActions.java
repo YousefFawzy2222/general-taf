@@ -1,5 +1,7 @@
-package com.blazedemo.utils;
+package com.blazedemo.utils.actions;
 
+import com.blazedemo.utils.WaitManager;
+import com.blazedemo.utils.logs.LogsManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -22,6 +24,7 @@ public class FrameActions {
                 .until(d -> {
                     try {
                         d.switchTo().frame(index);
+                        LogsManager.info("Switched to frame with index: " + index);
                         return true;
                     } catch (Exception e) {
                         return false;
@@ -38,6 +41,7 @@ public class FrameActions {
                 .until(d -> {
                     try {
                         d.switchTo().frame(nameOrId);
+                        LogsManager.info("Switched to frame with name or ID: " + nameOrId);
                         return true;
                     } catch (Exception e) {
                         return false;
@@ -54,6 +58,7 @@ public class FrameActions {
             .until(d -> {
                 try {
                     d.switchTo().frame(d.findElement(frameLocator));
+                    LogsManager.info("Switched to frame with locator: " + frameLocator);
                     return true;
                 } catch (Exception e) {
                     return false;
@@ -69,6 +74,7 @@ public class FrameActions {
                 .until(d -> {
                     try {
                         d.switchTo().defaultContent();
+                        LogsManager.info("Switched back to default content");
                         return true;
                     } catch (Exception e) {
                         return false;
