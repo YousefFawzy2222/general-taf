@@ -9,7 +9,6 @@ public class BrowserActions {
     public BrowserActions(WebDriver driver){
         this.driver = driver;
     }
-
     /**
      * Maximize Window
      */
