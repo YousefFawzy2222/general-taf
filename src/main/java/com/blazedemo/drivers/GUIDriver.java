@@ -1,9 +1,9 @@
 package com.blazedemo.drivers;
 
+import com.blazedemo.utils.dataReader.PropertyReader;
 import com.blazedemo.utils.logs.LogsManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ThreadGuard;
-import utils.PropertyReader;
 
 public class GUIDriver {
     private final ThreadLocal<WebDriver> driverThreadLocal = new ThreadLocal<>();
