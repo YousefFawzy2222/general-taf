@@ -5,7 +5,7 @@ import org.openqa.selenium.*;
 import java.io.File;
 
 public class ElementActions {
-    private WebDriver driver;
+    private final WebDriver driver;
     private final WaitManager waitBot;
 
     public ElementActions(WebDriver driver) {
