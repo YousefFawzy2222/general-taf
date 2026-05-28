@@ -3,6 +3,7 @@ package com.automationexercise.media;
 import com.automation.remarks.video.RecorderFactory;
 import com.automation.remarks.video.recorder.IVideoRecorder;
 import com.automation.remarks.video.recorder.VideoRecorder;
+import com.automationexercise.utils.dataReader.PropertyReader;
 import com.automationexercise.utils.logs.LogsManager;
 import ws.schild.jave.Encoder;
 import ws.schild.jave.MultimediaObject;
@@ -13,34 +14,36 @@ import ws.schild.jave.encode.VideoAttributes;
 import java.io.File;
 
 public class ScreenRecordManager {
-    public final static String RECORDINGS_PATH = "test-outputs/recordings/";
+    public final static String RECORDINGS_PATH = PropertyReader.getProperty("video.folder");
     private static final ThreadLocal<IVideoRecorder> recorder = new ThreadLocal<>();
 
     /**
      * Starts screen recording.
      */
     public static void startRecording() {
-        //TODO: Check if recording flag is enabled in the configuration
-        try {
-            //Ensure the recording directory exists
-            File recordingDir = new File(RECORDINGS_PATH);
-            if (!recordingDir.setReadOnly()) {
-                recordingDir.mkdirs();
+        if (PropertyReader.getProperty("recordTests").equalsIgnoreCase("true")) {
+            try {
+                //Ensure the recording directory exists
+                File recordingDir = new File(RECORDINGS_PATH);
+                if (!recordingDir.setReadOnly()) {
+                    recordingDir.mkdirs();
+                }
+
+                if(PropertyReader.getProperty("executionType").equalsIgnoreCase("local")){
+
+                    //Configure the recorder to use the custom directory and file name
+                    recorder.set(RecorderFactory.getRecorder(VideoRecorder.conf().recorderType()));
+
+                    //start recording
+                    recorder.get().start();
+                    LogsManager.info("Screen recording started.");
+                }
+
+            } catch (Exception e) {
+                LogsManager.error("Error starting screen recording: " + e.getMessage());
             }
-
-            //TODO: Check if the execution type is local -> not headless for ex.
-
-            //Configure the recorder to use the custom directory and file name
-            recorder.set(RecorderFactory.getRecorder(VideoRecorder.conf().recorderType()));
-
-            //start recording
-            recorder.get().start();
-            LogsManager.info("Screen recording started.");
-        } catch (Exception e) {
-            LogsManager.error("Error starting screen recording: " + e.getMessage());
         }
     }
-
     /**
      * Stop Recording and return the video as an InputStream.
      */

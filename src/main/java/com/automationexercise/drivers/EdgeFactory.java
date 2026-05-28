@@ -1,15 +1,23 @@
 package com.automationexercise.drivers;
 
+import com.automationexercise.utils.dataReader.PropertyReader;
+import com.automationexercise.utils.logs.LogsManager;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
+
+import java.net.URI;
 
 
 public class EdgeFactory extends AbstractDriver {
+    private final String remoteHost = PropertyReader.getProperty("remoteHost");
+    private final String remotePort = PropertyReader.getProperty("remotePort");
     private EdgeOptions getOptions() {
         EdgeOptions options = new EdgeOptions();
-        options.addArguments("--remote-allow-origis=*");
+        options.addArguments("--remote-allow-origins=*");
         // Allows remote origins (used to bypass ChromeDriver security restrictions in newer Chrome versions)
 
         options.addArguments("--start-maximized");
@@ -36,11 +44,33 @@ public class EdgeFactory extends AbstractDriver {
         options.setPageLoadStrategy(PageLoadStrategy.EAGER);
         // Tells Selenium to continue once DOM is loaded, without waiting for all resources (faster tests)
 
+        if (PropertyReader.getProperty("executionType").equalsIgnoreCase("LocalHeadless") ||
+                PropertyReader.getProperty("executionType").equalsIgnoreCase("Remote")){
+            options.addArguments("--headless");
+        }
+
         return options;
     }
 
     @Override
     public WebDriver createDriver() {
-        return new EdgeDriver(getOptions()); //Creates an object from edge web driver and intializes its options with getOptions
+        if(PropertyReader.getProperty("executionType").equalsIgnoreCase("Local") ||
+                PropertyReader.getProperty("executionType").equalsIgnoreCase("LocalHeadless")){
+            return new EdgeDriver(getOptions()); //Creates an object from chrome web driver and intializes its options with getOptions
+
+        }else if(PropertyReader.getProperty("executionType").equalsIgnoreCase("Remote")){
+            try{
+                return new RemoteWebDriver(
+                        new URI("http://" + remoteHost + ":" + remotePort + "/wd/hub").toURL(), getOptions()
+                );
+            }catch (Exception e) {
+                LogsManager.error("Failed to create RemoteWebDriver: " + e.getMessage());
+                throw new RuntimeException("Failed to create RemoteWebDriver", e);
+            }
+        }
+        else{
+            LogsManager.error("Invalid execution type specified: " + PropertyReader.getProperty("executionType"));
+            throw new IllegalArgumentException("Invalid execution type specified: " + PropertyReader.getProperty("executionType"));
+        }
     }
 }
