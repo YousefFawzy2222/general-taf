@@ -1,4 +1,4 @@
-package com.blazedemo.drivers;
+package com.automationexercise.drivers;
 
 import org.openqa.selenium.WebDriver;
 

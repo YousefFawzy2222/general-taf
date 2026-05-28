@@ -1,13 +1,14 @@
-package com.blazedemo.drivers;
+package com.automationexercise.drivers;
 
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 
-public class FirefoxFactory extends AbstractDriver {
-    private FirefoxOptions getOptions(){
-        FirefoxOptions options = new FirefoxOptions();
+
+public class EdgeFactory extends AbstractDriver {
+    private EdgeOptions getOptions() {
+        EdgeOptions options = new EdgeOptions();
         options.addArguments("--remote-allow-origis=*");
         // Allows remote origins (used to bypass ChromeDriver security restrictions in newer Chrome versions)
 
@@ -37,8 +38,9 @@ public class FirefoxFactory extends AbstractDriver {
 
         return options;
     }
+
     @Override
     public WebDriver createDriver() {
-        return new FirefoxDriver(getOptions()); //Creates an object from chrome web driver and intializes its options with getOptions
+        return new EdgeDriver(getOptions()); //Creates an object from edge web driver and intializes its options with getOptions
     }
 }

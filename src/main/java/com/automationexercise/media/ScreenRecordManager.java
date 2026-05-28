@@ -1,9 +1,9 @@
-package com.blazedemo.media;
+package com.automationexercise.media;
 
 import com.automation.remarks.video.RecorderFactory;
 import com.automation.remarks.video.recorder.IVideoRecorder;
 import com.automation.remarks.video.recorder.VideoRecorder;
-import com.blazedemo.utils.logs.LogsManager;
+import com.automationexercise.utils.logs.LogsManager;
 import ws.schild.jave.Encoder;
 import ws.schild.jave.MultimediaObject;
 import ws.schild.jave.encode.AudioAttributes;

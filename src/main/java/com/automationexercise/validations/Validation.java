@@ -1,8 +1,7 @@
-package com.blazedemo.validations;
+package com.automationexercise.validations;
 
-import com.blazedemo.utils.logs.LogsManager;
+import com.automationexercise.utils.logs.LogsManager;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.logging.Logs;
 import org.testng.asserts.SoftAssert;
 
 // Soft Assertion

@@ -1,8 +1,7 @@
-package com.blazedemo.media;
+package com.automationexercise.media;
 
-import com.blazedemo.drivers.GUIDriver;
-import com.blazedemo.utils.TimeManager;
-import com.blazedemo.utils.logs.LogsManager;
+import com.automationexercise.utils.TimeManager;
+import com.automationexercise.utils.logs.LogsManager;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 

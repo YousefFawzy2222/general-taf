@@ -1,7 +1,7 @@
-package com.blazedemo.utils.actions;
+package com.automationexercise.utils.actions;
 
-import com.blazedemo.utils.WaitManager;
-import com.blazedemo.utils.logs.LogsManager;
+import com.automationexercise.utils.WaitManager;
+import com.automationexercise.utils.logs.LogsManager;
 import org.openqa.selenium.WebDriver;
 
 public class AlertActions {

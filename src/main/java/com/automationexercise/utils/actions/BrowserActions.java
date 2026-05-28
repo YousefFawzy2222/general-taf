@@ -1,6 +1,6 @@
-package com.blazedemo.utils.actions;
+package com.automationexercise.utils.actions;
 
-import com.blazedemo.utils.logs.LogsManager;
+import com.automationexercise.utils.logs.LogsManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
 

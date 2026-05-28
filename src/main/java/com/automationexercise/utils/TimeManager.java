@@ -1,4 +1,4 @@
-package com.blazedemo.utils;
+package com.automationexercise.utils;
 
 import java.text.SimpleDateFormat;
 

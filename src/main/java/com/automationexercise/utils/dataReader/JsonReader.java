@@ -1,8 +1,8 @@
-package com.blazedemo.utils.dataReader;
+package com.automationexercise.utils.dataReader;
 //Data generation has 2 types (Dynamic - Static (Hardcoded))
 
 
-import com.blazedemo.utils.logs.LogsManager;
+import com.automationexercise.utils.logs.LogsManager;
 import com.jayway.jsonpath.JsonPath;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

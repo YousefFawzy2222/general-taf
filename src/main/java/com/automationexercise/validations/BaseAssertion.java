@@ -1,7 +1,7 @@
-package com.blazedemo.validations;
+package com.automationexercise.validations;
 
-import com.blazedemo.utils.WaitManager;
-import com.blazedemo.utils.actions.ElementActions;
+import com.automationexercise.utils.WaitManager;
+import com.automationexercise.utils.actions.ElementActions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 

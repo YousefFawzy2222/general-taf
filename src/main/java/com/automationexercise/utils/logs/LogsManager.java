@@ -1,4 +1,4 @@
-package com.blazedemo.utils.logs;
+package com.automationexercise.utils.logs;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

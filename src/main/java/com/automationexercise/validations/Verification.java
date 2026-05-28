@@ -1,4 +1,4 @@
-package com.blazedemo.validations;
+package com.automationexercise.validations;
 
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
