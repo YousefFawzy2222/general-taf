@@ -18,7 +18,7 @@ public class LogsManager {
     public static void error(String... message){
         logger().error(String.join(" ", message));
     }
-    public void warn (String... message){
+    public static void warn(String... message){
         logger().warn(String.join(" ", message));
     }
     public static void debug(String... message){

@@ -4,6 +4,7 @@ import com.automationexercise.utils.dataReader.PropertyReader;
 import com.automationexercise.utils.logs.LogsManager;
 
 import java.io.File;
+import java.nio.file.Path;
 
 public class FileUtils {
     private static final String USER_DIR =PropertyReader.getProperty("user.dir") + File.separator;
@@ -49,4 +50,12 @@ public class FileUtils {
         }
     }
 
+    public static void copyDirectory(Path historyFolder, Path resultsHistoryFolder) {
+        try {
+            org.apache.commons.io.FileUtils.copyDirectory(historyFolder.toFile(), resultsHistoryFolder.toFile());
+            LogsManager.info("Directory copied from " + historyFolder + " to " + resultsHistoryFolder);
+        } catch (Exception e) {
+            LogsManager.error("Error copying directory: " + e.getMessage());
+        }
+    }
 }
