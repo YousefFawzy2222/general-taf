@@ -1,12 +1,14 @@
 package com.automationexercise.utils.report;
 
+import com.automationexercise.utils.OSUtils;
+import com.automationexercise.utils.TerminalUtils;
 import com.automationexercise.utils.logs.LogsManager;
 import org.jsoup.Jsoup;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URL;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -14,6 +16,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class AllureBinaryManager {
+
     private static class LazyHolder {
         static final String VERSION = resolveVersion();
 
@@ -28,6 +31,47 @@ public class AllureBinaryManager {
         }
     }
 
+    public static void downloadAndExtract() {
+        try{
+            String version = LazyHolder.VERSION;
+            Path extractionDir = Paths.get(AllureConstant.EXTRACTION_DIR.toString(), "allure-" + version);
+            // C:\Users\yousef\.m2\repository\allure\allure-2.42.0
+            // if it exists skip
+            if(Files.exists(extractionDir)){
+                LogsManager.info("Allure binaries already exist for version " + version);
+                return;
+            }
+
+            // Give execute permission to the binary if not on Windows (MacOS, Linux)
+            if (!OSUtils.getCurrentOS().equals(OSUtils.OS.WINDOWS)){
+                TerminalUtils.executeTerminalCommand("chmod", "u+x", AllureConstant.USER_DIR.toString());
+            }
+
+            Path zipPath = downloadZip(version);
+            extractZip(zipPath);
+
+            LogsManager.info("Allure binaries downloaded and extracted successfully for version " + version);
+
+            // Give execute permission to the binary if not on Windows (MacOS, Linux)
+            if (!OSUtils.getCurrentOS().equals(OSUtils.OS.WINDOWS)){
+                TerminalUtils.executeTerminalCommand("chmod", "u+x", getExecutable().toString());
+            }
+
+            //Clean up the zip file after extraction
+            Files.deleteIfExists(Files.list(AllureConstant.EXTRACTION_DIR).filter(path -> path.toString().endsWith(".zip")).findFirst().orElseThrow(() -> new IOException("No ZIP file found for cleanup")));
+        }catch (Exception e){
+            LogsManager.error("Error in downloading and extracting Allure binaries: " + e.getMessage());
+        }
+    }
+
+    public static Path getExecutable() {
+        String version = LazyHolder.VERSION;
+        Path binaryPath = Paths.get(AllureConstant.EXTRACTION_DIR.toString(), "allure-" + version, "bin", "allure");
+        return OSUtils.getCurrentOS() == OSUtils.OS.WINDOWS
+                ? binaryPath.resolveSibling(binaryPath.getFileName() + ".bat") // If windows, look for allure.bat
+                : binaryPath; // if not Windows look for allure
+    }
+
     // Download ZIP file for Allure
     private static Path downloadZip(String version) {
         try {
@@ -38,7 +82,7 @@ public class AllureBinaryManager {
 
             if (!Files.exists(zipFile)) {
                 Files.createDirectories(AllureConstant.EXTRACTION_DIR);
-                try (BufferedInputStream in = new BufferedInputStream(new URL(url).toURI().toURL().openStream());
+                try (BufferedInputStream in = new BufferedInputStream(new URI(url).toURL().openStream());
                      OutputStream out = Files.newOutputStream(zipFile)) {
                     in.transferTo(out);
                 } catch (Exception e) {

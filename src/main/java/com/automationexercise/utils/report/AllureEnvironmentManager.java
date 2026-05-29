@@ -19,7 +19,7 @@ public class AllureEnvironmentManager {
                         .put("URL", getProperty("baseUrlWeb"))
                         .build(), String.valueOf(AllureConstant.RESULTS_FOLDER) + File.separator);
         LogsManager.info("Allure environment properties set successfully.");
-        AllureBunaryManager.downloadAndExtract();
+        AllureBinaryManager.downloadAndExtract();
 
     }
 }
