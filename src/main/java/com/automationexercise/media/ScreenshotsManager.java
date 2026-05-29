@@ -2,6 +2,7 @@ package com.automationexercise.media;
 
 import com.automationexercise.utils.TimeManager;
 import com.automationexercise.utils.logs.LogsManager;
+import com.automationexercise.utils.report.AllureAttahcmentManager;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 
@@ -21,7 +22,7 @@ public class ScreenshotsManager {
             File screenshotFile = new File(SCREENSHOTS_PATH + screenshotName + "-"+ TimeManager.getTimeStamp() + ".png");
             FileUtils.copyFile(screenshotSrc, screenshotFile);
 
-            // TODO: Attach the screenshot to Allure if needed
+            AllureAttahcmentManager.attachScreenshot(screenshotName, screenshotFile.getAbsolutePath());
 
         } catch (IOException e) {
             LogsManager.error("Error taking screenshot: " + e.getMessage());
@@ -38,7 +39,7 @@ public class ScreenshotsManager {
             File screenshotFile = new File(SCREENSHOTS_PATH + ariaName + "-"+ TimeManager.getTimeStamp() + ".png");
             FileUtils.copyFile(screenshotSrc, screenshotFile);
 
-            // TODO: Attach the screenshot to Allure if needed
+            AllureAttahcmentManager.attachScreenshot(ariaName, screenshotFile.getAbsolutePath());
 
         }catch (IOException e){
             LogsManager.error("Error taking element screenshot: " + e.getMessage());

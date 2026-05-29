@@ -1,9 +1,11 @@
 package com.automationexercise.utils.logs;
 
+import com.automationexercise.utils.report.AllureConstant;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class LogsManager {
+    public static final String LOGS_PATH = AllureConstant.USER_DIR + "test-output/Logs/";
     // we commented this line below to avoid always initializing the logger before each call by  using a static function
     //private static final Logger logger = LogManager.getLogger(Thread.currentThread().getStackTrace()[3].getClassName());
 

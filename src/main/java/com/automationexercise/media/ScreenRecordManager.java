@@ -25,13 +25,13 @@ public class ScreenRecordManager {
             try {
                 //Ensure the recording directory exists
                 File recordingDir = new File(RECORDINGS_PATH);
-                if (!recordingDir.setReadOnly()) {
+                if (!recordingDir.exists()) {
                     recordingDir.mkdirs();
                 }
 
-                if(PropertyReader.getProperty("executionType").equalsIgnoreCase("local")){
+                //Configure the recorder to use the custom directory and file name
 
-                    //Configure the recorder to use the custom directory and file name
+                if(PropertyReader.getProperty("executionType").equalsIgnoreCase("local")){
                     recorder.set(RecorderFactory.getRecorder(VideoRecorder.conf().recorderType()));
 
                     //start recording
