@@ -21,7 +21,7 @@ public abstract class BaseAssertion {
     protected abstract void assertFalse(boolean condition, String message);
     protected  abstract void assertEquals(Object actual, Object expected, String message);
 
-    protected void Equals(String actual, String expected, String message){
+    public void Equals(String actual, String expected, String message){
         assertEquals(actual, expected, message);
     }
     protected void isElementVisible(By locator){
@@ -37,12 +37,25 @@ public abstract class BaseAssertion {
         assertTrue(flag, "Element is not visible: " + locator);
     }
     //verify page url
-    protected void assertPageUrl(String expectedUrl){
+    public void assertPageUrl(String expectedUrl){
         String actualUrl = driver.getCurrentUrl();
         assertEquals(actualUrl, expectedUrl, "Page URL mismatch. Expected: " + expectedUrl + ", Actual: " + actualUrl);
     }
+    //verify element is visible
+    public void isElementNotVisible(By locator){
+        boolean flag = waitManager.fluentWait().until(driver1 ->{
+            try{
+                driver1.findElement(locator).isDisplayed();
+                return false;
+            }
+            catch (Exception e){
+                return true;
+            }
+        });
+        assertTrue(flag, "Element is visible: " + locator);
+    }
     //verify page title
-    protected void assertPageTitle(String expectedTitle){
+    public void assertPageTitle(String expectedTitle){
         String actualTitle = driver.getTitle();
         assertEquals(actualTitle, expectedTitle, "Page title mismatch. Expected: " + expectedTitle + ", Actual: " + actualTitle);
     }

@@ -2,7 +2,10 @@ package com.automationexercise.utils.actions;
 
 import com.automationexercise.utils.WaitManager;
 import com.automationexercise.utils.logs.LogsManager;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 import java.io.File;
 

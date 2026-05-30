@@ -12,7 +12,9 @@ public class AllureConstant {
     // why not properties?
     // for simplicity
     public static final Path USER_DIR = Paths.get(PropertyReader.getProperty("user.dir"), File.separator);
+
     public static final Path USER_HOME = Paths.get(PropertyReader.getProperty("user.home"), File.separator);
+
 
     public static final Path RESULTS_FOLDER = Paths.get(String.valueOf(USER_DIR), "test-output", "allure-results", File.separator);
     public static final Path REPORT_PATH = Paths.get(String.valueOf(USER_DIR), "test-output", "reports", File.separator); //Single file report
@@ -27,6 +29,7 @@ public class AllureConstant {
 
     public static final String ALLURE_ZIP_BASE_URL = "https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/";
 
-    public static final Path EXTRACTION_DIR = Paths.get(String.valueOf(USER_DIR), "m2/repository/allure", File.separator);
+    public static final Path EXTRACTION_DIR =
+            Paths.get(String.valueOf(USER_HOME), ".m2", "repository", "allure", File.separator);
 
 }

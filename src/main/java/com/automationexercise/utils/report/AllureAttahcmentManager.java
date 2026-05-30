@@ -11,7 +11,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static com.automationexercise.utils.dataReader.PropertyReader.getProperty;
-import static com.automationexercise.utils.logs.LogsManager.error;
 
 public class AllureAttahcmentManager {
 

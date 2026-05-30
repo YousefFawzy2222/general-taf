@@ -5,6 +5,9 @@ import com.automationexercise.utils.logs.LogsManager;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import static org.apache.commons.io.FileUtils.copyFile;
 
 public class FileUtils {
     private static final String USER_DIR =PropertyReader.getProperty("user.dir") + File.separator;
@@ -13,18 +16,34 @@ public class FileUtils {
     }
 
     // Renaming
-    public static void renameFile(String oldName, String newName){
-        try{
-            File oldFile = new File(USER_DIR + oldName);
-            File newFile = new File(USER_DIR + newName);
-            if (oldFile.renameTo(newFile)) {
+    public static void renameFile(String oldName, String newName) {
+        try {
+            var targetFile = new File(oldName);
+            String targetDirectory = targetFile.getParentFile().getAbsolutePath();
+            File newFile = new File(targetDirectory + File.separator + newName);
+            if(!targetFile.getPath().equals(newFile.getPath())){
+                copyFile(targetFile,newFile);
+                org.apache.commons.io.FileUtils.deleteQuietly(targetFile);
                 LogsManager.info("File renamed from " + oldName + " to " + newName);
-            } else {
-                LogsManager.error("Failed to rename file: " + oldName);
+            }else {
+                LogsManager.info("Old name and new name are the same. No renaming needed for: " + oldName);
             }
-        }catch (Exception e){
-            LogsManager.error("Error renaming file: " + e.getMessage());
+
+        } catch (Exception e) {
+            LogsManager.error("Error renaming file from " + oldName + " to " + newName + ": " + e.getMessage());
         }
+    }
+
+    private static Path resolvePath(String path) {
+        Path inputPath = Paths.get(path);
+
+        if (inputPath.isAbsolute()) {
+            return inputPath.normalize();
+        }
+
+        return Paths.get(PropertyReader.getProperty("user.dir"))
+                .resolve(inputPath)
+                .normalize();
     }
 
 

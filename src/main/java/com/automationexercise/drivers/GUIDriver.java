@@ -16,6 +16,7 @@ public class GUIDriver {
     private final String browser = PropertyReader.getProperty("browserType");
 
     public GUIDriver() {
+        LogsManager.info("Initializing GUIDriver with browser type: " + browser);
         Browser browserType = Browser.valueOf(browser.toUpperCase());
         LogsManager.info("Initializing driver for browser: " + browserType);
         AbstractDriver abstractDriver = browserType.getDriverFactory();

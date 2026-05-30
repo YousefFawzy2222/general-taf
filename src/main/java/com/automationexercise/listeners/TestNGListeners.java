@@ -1,4 +1,4 @@
-package com.automationexercise.customelisteners;
+package com.automationexercise.listeners;
 
 import com.automationexercise.FileUtils;
 import com.automationexercise.drivers.WebDriverProvider;
@@ -11,7 +11,6 @@ import com.automationexercise.utils.report.AllureConstant;
 import com.automationexercise.utils.report.AllureEnvironmentManager;
 import com.automationexercise.utils.report.AllureReportGenerator;
 import com.automationexercise.validations.Validation;
-import org.json.Property;
 import org.openqa.selenium.WebDriver;
 import org.testng.*;
 
@@ -20,6 +19,9 @@ import java.io.File;
 public class TestNGListeners implements IExecutionListener, IInvokedMethodListener, ITestListener {
     @Override
     public void onExecutionStart() {
+        PropertyReader.loadProperties();
+        LogsManager.info("Properties files loaded");
+
         LogsManager.info("Test Execution started");
 
         cleanTestOutputDirectories();
@@ -55,29 +57,35 @@ public class TestNGListeners implements IExecutionListener, IInvokedMethodListen
 
     @Override
     public void beforeInvocation(IInvokedMethod method, ITestResult testResult, ITestContext context) {
-        WebDriver driver = null;
-        if (method.isTestMethod()){
-            ScreenRecordManager.stopRecording(testResult.getName());
-            Validation.assertAll();
-            if (testResult.getInstance() instanceof WebDriverProvider provider){
-                driver = provider.getWebDriver(); //Intialized driver fro WebDriverProvider
-            }
-            switch (testResult.getStatus()){
-                case ITestResult.SUCCESS -> ScreenshotsManager.takeFullPageScreenshot(driver, "passed-" + testResult.getName());
-                case ITestResult.FAILURE -> ScreenshotsManager.takeFullPageScreenshot(driver, "failed-" + testResult.getName());
-                case ITestResult.SKIP -> ScreenshotsManager.takeFullPageScreenshot(driver, "skipped-" + testResult.getName());
-            }
-            AllureAttahcmentManager.attachLogs();
-            AllureAttahcmentManager.attachRecords(testResult.getName());
-
+        if (method.isTestMethod()) {
+            ScreenRecordManager.startRecording();
+            LogsManager.info("Started recording for test: " + method.getTestMethod().getMethodName());
         }
     }
 
     @Override
     public void afterInvocation(IInvokedMethod method, ITestResult testResult, ITestContext context) {
-        if (method.isTestMethod()){
-            ScreenRecordManager.startRecording();
-            LogsManager.info("Started recording for test: " + method.getTestMethod().getMethodName());
+        WebDriver driver = null;
+
+        if (method.isTestMethod()) {
+            if (testResult.getInstance() instanceof WebDriverProvider provider) {
+                driver = provider.getWebDriver();
+            }
+
+            switch (testResult.getStatus()) {
+                case ITestResult.SUCCESS ->
+                        ScreenshotsManager.takeFullPageScreenshot(driver, "passed-" + testResult.getName());
+                case ITestResult.FAILURE ->
+                        ScreenshotsManager.takeFullPageScreenshot(driver, "failed-" + testResult.getName());
+                case ITestResult.SKIP ->
+                        ScreenshotsManager.takeFullPageScreenshot(driver, "skipped-" + testResult.getName());
+            }
+
+            ScreenRecordManager.stopRecording(testResult.getName());
+            AllureAttahcmentManager.attachLogs();
+            AllureAttahcmentManager.attachRecords(testResult.getName());
+
+            Validation.assertAll();
         }
     }
 

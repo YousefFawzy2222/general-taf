@@ -15,7 +15,7 @@ public class PropertyReader {
     //instead we use System.getProperty() to scan all the properties we have in our project
 
     // Load Properties function to load all data exists on .properties files into system properties
-    public static  Properties loadProperties(){
+    public static Properties loadProperties(){
         try{
             Properties properties = new Properties();
             Collection<File> propertiesFiles;
