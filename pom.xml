@@ -16,6 +16,7 @@
         <aspectj.version>1.9.25.1</aspectj.version>
     </properties>
     <build>
+        <directory>test-output/target</directory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
