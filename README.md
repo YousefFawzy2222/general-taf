@@ -141,18 +141,6 @@ The framework can generate:
 - Logs
 - Optional video recordings
 
-## Common Notes
-
-- Properties must be loaded before using values such as `browserType` or `video.folder`.
-- Screenshots should be taken after the test method finishes, when the test status is known.
-- Allure `@Step` requires AspectJ Weaver at runtime.
-- Avoid project paths containing special characters like `&` on Windows.
-- For Windows `cmd start`, use an empty title argument:
-
-```java
-cmd /c start "" "path-to-report.html"
-```
-
 ## Recommended Java Version
 
 Java 21 LTS is recommended for better compatibility with Selenium, TestNG, Allure, and AspectJ.
