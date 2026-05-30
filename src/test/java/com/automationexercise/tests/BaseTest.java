@@ -9,6 +9,6 @@ public class BaseTest implements WebDriverProvider {
 
     @Override
     public WebDriver getWebDriver() {
-        return driver.getCurrentDriver();
+        return driver.get();
     }
 }
