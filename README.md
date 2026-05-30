@@ -15,12 +15,11 @@ The framework is designed to support reusable browser actions, page objects, val
 - TestNG listener auto-registration
 - Allure report generation
 - Single-file Allure HTML report generation
-- Allure `@Step` support for test sub-steps
 - Screenshot capture after test execution
 - Optional screen recording
 - Log4j2 logging
 - Soft and hard assertion utilities
-- Support for Chrome, Firefox, and Edge drivers
+- Support for Chrome, Firefox, and Edge drivers (Optional to add more on your own)
 - Maven-based dependency and test execution
 
 ## Tech Stack
