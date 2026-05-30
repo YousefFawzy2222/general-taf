@@ -118,19 +118,6 @@ When running from IntelliJ, add AspectJ Weaver to VM options if Allure `@Step` a
 -javaagent:"C:\Users\youse\.m2\repository\org\aspectj\aspectjweaver\1.9.25.1\aspectjweaver-1.9.25.1.jar"
 ```
 
-## Allure Steps
-
-Use Allure steps to show test sub-steps in the report:
-
-```java
-import io.qameta.allure.Step;
-
-@Step("Navigate to home page")
-public void navigateToHomePage() {
-    driver.browser().navigateTo(PropertyReader.getProperty("baseUrlWeb"));
-}
-```
-
 ## Reports and Artifacts
 
 Generated files are stored under:
