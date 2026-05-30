@@ -9,7 +9,7 @@ import static com.automationexercise.utils.dataReader.PropertyReader.getProperty
 import static com.github.automatedowl.tools.AllureEnvironmentWriter.allureEnvironmentWriter;
 
 public class AllureEnvironmentManager {
-    void setAllureEnvironment() {
+    public static void setAllureEnvironment() {
         allureEnvironmentWriter(
                 ImmutableMap.<String, String>builder()
                         .put("OS", getProperty("os.name"))

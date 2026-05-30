@@ -10,10 +10,10 @@ import java.io.File;
 import java.io.IOException;
 
 public class ScreenshotsManager {
-    private static final String SCREENSHOTS_PATH = "test-output/screenshots/";
+    public static final String SCREENSHOTS_PATH = "test-output/screenshots/";
 
     //take full page screenshot
-    public void takeFullPageScreenshot(WebDriver driver, String screenshotName){
+    public static void takeFullPageScreenshot(WebDriver driver, String screenshotName){
         try {
             // Capture screenshot using TakeScreenshot
             File screenshotSrc = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
