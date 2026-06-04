@@ -12,13 +12,13 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 public class WaitManager {
-    private WebDriver driver;
+    private static WebDriver driver;
 
     public WaitManager(WebDriver driver){
         this.driver = driver;
     }
 
-    public FluentWait<WebDriver> fluentWait(){
+    public static FluentWait<WebDriver> fluentWait(){
         return new FluentWait<>(driver)
                 .withTimeout(Duration.ofSeconds(Long.parseLong(PropertyReader.getProperty("DEFAULT_WAIT")))) //wait for 10 seconds
                 .pollingEvery(Duration.ofMillis(500))
@@ -26,7 +26,7 @@ public class WaitManager {
 
     }
     //Class that extends Exception
-    private ArrayList<Class<? extends Exception>> getExceptions(){
+    private static ArrayList<Class<? extends Exception>> getExceptions(){
         ArrayList<Class<? extends Exception>> exceptions = new ArrayList<>();
         exceptions.add(NoSuchElementException.class); //add.() adds to the ArrayList an element
         exceptions.add(StaleElementReferenceException.class);

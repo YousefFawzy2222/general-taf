@@ -7,9 +7,13 @@ import org.openqa.selenium.WebDriver;
 
 // Parent
 public abstract class BaseAssertion {
-    protected final WebDriver driver;
-    protected final WaitManager waitManager;
+    protected WebDriver driver;
+    protected WaitManager waitManager;
     protected ElementActions elementActions;
+
+    protected BaseAssertion(){
+
+    }
 
     protected BaseAssertion(WebDriver driver) {
         this.driver = driver;
@@ -24,7 +28,7 @@ public abstract class BaseAssertion {
     public void Equals(String actual, String expected, String message){
         assertEquals(actual, expected, message);
     }
-    protected void isElementVisible(By locator){
+    public void isElementVisible(By locator){
         boolean flag = waitManager.fluentWait().until(driver1 ->{
             try{
                 driver1.findElement(locator).isDisplayed();

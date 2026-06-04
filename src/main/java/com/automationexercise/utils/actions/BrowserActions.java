@@ -1,5 +1,6 @@
 package com.automationexercise.utils.actions;
 
+import com.automationexercise.utils.WaitManager;
 import com.automationexercise.utils.logs.LogsManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
@@ -52,5 +53,18 @@ public class BrowserActions {
     public void openNewWindow(){
         driver.switchTo().newWindow(WindowType.WINDOW);
         LogsManager.info("New window opened");
+    }
+
+    //close extension tab
+    public void closeExtensionTab(){
+        String currentWindowHandle = driver.getWindowHandle();
+        //wait until extension tab is loaded
+        WaitManager.fluentWait().until(d ->
+                    driver.getWindowHandles().size() > 1
+        );
+        //then close the tab
+        driver.switchTo().window(driver.getWindowHandles().toArray()[1].toString()).close();
+        driver.switchTo().window(currentWindowHandle);
+        LogsManager.info("Extension tab closed");
     }
 }

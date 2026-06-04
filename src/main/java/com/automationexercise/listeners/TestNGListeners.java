@@ -30,8 +30,8 @@ public class TestNGListeners implements IExecutionListener, IInvokedMethodListen
         createTestOutputDirectories();
         LogsManager.info("Test output directories created");
 
-        PropertyReader.loadProperties();
-        LogsManager.info("Properties files loaded");
+        AllureReportGenerator.copyHistory();
+        LogsManager.info("Previous Allure history copied");
 
         AllureEnvironmentManager.setAllureEnvironment();
         LogsManager.info("Allure environment set");
@@ -42,9 +42,6 @@ public class TestNGListeners implements IExecutionListener, IInvokedMethodListen
     public void onExecutionFinish() {
         AllureReportGenerator.generateReports(false);
         LogsManager.info("Allure report generated");
-
-        AllureReportGenerator.copyHistory();
-        LogsManager.info("Allure history copied");
 
         AllureReportGenerator.generateReports(true);
         LogsManager.info("Single file Allure Report generated");
@@ -110,8 +107,6 @@ public class TestNGListeners implements IExecutionListener, IInvokedMethodListen
         FileUtils.cleanDirectory(AllureConstant.RESULTS_FOLDER.toFile());
         FileUtils.cleanDirectory(new File(ScreenshotsManager.SCREENSHOTS_PATH));
         FileUtils.cleanDirectory(new File(ScreenRecordManager.RECORDINGS_PATH));
-        FileUtils.cleanDirectory(new File(LogsManager.LOGS_PATH));
-
     }
 
     //screenshoots, recordings

@@ -11,8 +11,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import java.net.URI;
 
 public class ChromeFactory extends AbstractDriver{
-    private final String remoteHost = PropertyReader.getProperty("remoteHost");
-    private final String remotePort = PropertyReader.getProperty("remotePort");
     private ChromeOptions getOptions(){
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
@@ -30,21 +28,24 @@ public class ChromeFactory extends AbstractDriver{
         options.addArguments("--disable-infobars");
         // Removes "Chrome is being controlled by automated test software" info bar
 
-        options.addArguments("--disable-extensions");
-        // Disables all installed Chrome extensions (clean test environment)
-
-        options.addArguments("--disable-gpu");
-        // Disables GPU hardware acceleration (useful for stability in some environments, especially CI)
-
         options.setAcceptInsecureCerts(true);
         // Accepts SSL certificates even if they are invalid/self-signed (useful for test environments)
 
         options.setPageLoadStrategy(PageLoadStrategy.EAGER);
         // Tells Selenium to continue once DOM is loaded, without waiting for all resources (faster tests)
 
-        if (PropertyReader.getProperty("executionType").equalsIgnoreCase("LocalHeadless") ||
-                PropertyReader.getProperty("executionType").equalsIgnoreCase("Remote")){
-            options.addArguments("--headless");
+        options.addExtensions(extensions);
+
+        switch (PropertyReader.getProperty("executionType").toLowerCase()) {
+            case "localheadless" -> options.addArguments("--headless=new");
+
+            case "remote" -> {
+                // Re-create options to remove extensions
+                options.addArguments("--disable-gpu");
+                options.addArguments("--disable-extensions");
+                options.addArguments("--headless=new");
+            }
+
         }
 
         return options;

@@ -12,8 +12,6 @@ import java.net.URI;
 
 
 public class EdgeFactory extends AbstractDriver {
-    private final String remoteHost = PropertyReader.getProperty("remoteHost");
-    private final String remotePort = PropertyReader.getProperty("remotePort");
     private EdgeOptions getOptions() {
         EdgeOptions options = new EdgeOptions();
         options.addArguments("--remote-allow-origins=*");
@@ -31,23 +29,22 @@ public class EdgeFactory extends AbstractDriver {
         options.addArguments("--disable-infobars");
         // Removes "Chrome is being controlled by automated test software" info bar
 
-        options.addArguments("--disable-extensions");
-        // Disables all installed Chrome extensions (clean test environment)
-
-        options.addArguments("--disable-gpu");
-        // Disables GPU hardware acceleration (useful for stability in some environments, especially CI)
-
         options.setAcceptInsecureCerts(true);
         // Accepts SSL certificates even if they are invalid/self-signed (useful for test environments)
 
         options.setPageLoadStrategy(PageLoadStrategy.EAGER);
         // Tells Selenium to continue once DOM is loaded, without waiting for all resources (faster tests)
 
-        if (PropertyReader.getProperty("executionType").equalsIgnoreCase("LocalHeadless") ||
-                PropertyReader.getProperty("executionType").equalsIgnoreCase("Remote")){
-            options.addArguments("--headless");
+        String executionType = PropertyReader.getProperty("executionType");
+
+        if (executionType.equalsIgnoreCase("Local")) {
+            options.addExtensions(extensions);
         }
 
+        if (executionType.equalsIgnoreCase("LocalHeadless")) {
+            options.addArguments("--headless=new");
+            options.addArguments("--disable-extensions");
+        }
         return options;
     }
 

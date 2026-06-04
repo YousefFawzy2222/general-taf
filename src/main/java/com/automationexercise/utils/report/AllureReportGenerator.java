@@ -35,7 +35,7 @@ public class AllureReportGenerator {
 
         Path reportPath = AllureConstant.REPORT_PATH.resolve(reportFileName);
         switch (OSUtils.getCurrentOS()) {
-            case WINDOWS -> TerminalUtils.executeTerminalCommand("cmd", "/c", "start", reportPath.toString());
+            case WINDOWS -> TerminalUtils.executeTerminalCommand("cmd", "/c", "start", "", reportPath.toString());
             case MAC, LINUX -> TerminalUtils.executeTerminalCommand("open", reportPath.toString());
             default ->
                     LogsManager.warn("Unsupported OS for opening Allure report automatically. Please open the report manually at: " + reportPath);

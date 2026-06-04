@@ -9,6 +9,10 @@ public class Verification extends BaseAssertion {
         super(driver);
     }
 
+    public Verification() {
+        super();
+    }
+
     @Override
     protected void assertTrue(boolean condition, String message) {
         Assert.assertTrue(condition, message);

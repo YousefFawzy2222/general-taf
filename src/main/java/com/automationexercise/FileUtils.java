@@ -4,6 +4,7 @@ import com.automationexercise.utils.dataReader.PropertyReader;
 import com.automationexercise.utils.logs.LogsManager;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -60,10 +61,22 @@ public class FileUtils {
         }
     }
 
+    //Force Delete File
+    public static void forceDeleteFile(File file){
+        try{
+            org.apache.commons.io.FileUtils.forceDelete(file);
+            LogsManager.info("File force deleted: " + file.getAbsolutePath());
+
+        }catch (IOException e){
+            LogsManager.error("Error force deleting file: " + e.getMessage());
+        }
+    }
+
+
     // Cleaning Directory
     public static void cleanDirectory(File file){
         try{
-            org.apache.commons.io.FileUtils.deleteQuietly(file);
+            org.apache.commons.io.FileUtils.deleteQuietly(file); //in use > slikp
         }catch (Exception e){
             LogsManager.error("Error cleaning directory: " + e.getMessage());
         }

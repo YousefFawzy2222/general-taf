@@ -6,15 +6,16 @@ import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.URI;
 
 public class FirefoxFactory extends AbstractDriver {
-    private final String remoteHost = PropertyReader.getProperty("remoteHost");
-    private final String remotePort = PropertyReader.getProperty("remotePort");
     private FirefoxOptions getOptions(){
         FirefoxOptions options = new FirefoxOptions();
+        FirefoxProfile profile = new FirefoxProfile();
+
         options.addArguments("--remote-allow-origins=*");
         // Allows remote origins (used to bypass ChromeDriver security restrictions in newer Chrome versions)
 
@@ -42,10 +43,23 @@ public class FirefoxFactory extends AbstractDriver {
         options.setPageLoadStrategy(PageLoadStrategy.EAGER);
         // Tells Selenium to continue once DOM is loaded, without waiting for all resources (faster tests)
 
-        if (PropertyReader.getProperty("executionType").equalsIgnoreCase("LocalHeadless") ||
-                PropertyReader.getProperty("executionType").equalsIgnoreCase("Remote")){
-            options.addArguments("--headless");
-        }
+
+//        for (File extension : extensions) {
+//            profile.addExtension(extension);
+//        }
+//        options.setProfile(profile);
+//
+//        switch (PropertyReader.getProperty("executionType").toLowerCase()) {
+//            case "LocalHeadless" -> options.addArguments("--headless=new");
+//
+//            case "Remote" -> {
+//                // Re-create options to remove extensions
+//                options.addArguments("--disable-gpu");
+//                options.addArguments("--disable-extensions");
+//                options.addArguments("--headless=new");
+//            }
+//
+//        }
 
         return options;
     }
