@@ -2,10 +2,7 @@ package com.automationexercise.utils.actions;
 
 import com.automationexercise.utils.WaitManager;
 import com.automationexercise.utils.logs.LogsManager;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
@@ -29,6 +26,13 @@ public class ElementActions {
                     try {
                         WebElement element = d.findElement(locator);
                         scrollToElementJS(locator);
+                        //Wait until the element is stable (not moving)
+                        Point initialLocation =  element.getLocation();
+                        LogsManager.info("Element location before waiting: " + initialLocation);
+                        Point finalLocation = element.getLocation();
+                        LogsManager.info("Element Final Location: " + finalLocation);
+                        if (!initialLocation.equals(finalLocation))
+                            return false;
                         element.click();
                         LogsManager.info("Clicked on Element:" + locator);
                         return true;

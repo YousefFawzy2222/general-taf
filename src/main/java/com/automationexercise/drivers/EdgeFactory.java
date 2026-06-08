@@ -3,12 +3,16 @@ package com.automationexercise.drivers;
 import com.automationexercise.utils.dataReader.PropertyReader;
 import com.automationexercise.utils.logs.LogsManager;
 import org.openqa.selenium.PageLoadStrategy;
+import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class EdgeFactory extends AbstractDriver {
@@ -19,6 +23,18 @@ public class EdgeFactory extends AbstractDriver {
 
         options.addArguments("--start-maximized");
         // Opens the browser in maximized window mode
+
+        Map<String,Object> prefs = new HashMap<>();
+        String userDir = System.getProperty("user.dir");
+        String downloadPath = userDir + "\\src\\test\\resources\\downloads";
+        prefs.put("profile.default_content_settings.popups", 0);
+        prefs.put("download.prompt_for_download",false);
+        prefs.put("download.default_directory", downloadPath);
+        options.setExperimentalOption("prefs", prefs);
+        options.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.IGNORE);
+        options.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS,true);
+        options.setCapability(CapabilityType.UNHANDLED_PROMPT_BEHAVIOUR, UnexpectedAlertBehaviour.IGNORE);
+        options.setCapability(CapabilityType.ENABLE_DOWNLOADS, false);
 
         options.addArguments("--disable-notifications");
         // Disables browser notifications (prevents popups asking for permission)

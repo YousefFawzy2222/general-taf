@@ -1,5 +1,6 @@
 package com.automationexercise.validations;
 
+import com.automationexercise.FileUtils;
 import com.automationexercise.utils.WaitManager;
 import com.automationexercise.utils.actions.ElementActions;
 import org.openqa.selenium.By;
@@ -25,8 +26,9 @@ public abstract class BaseAssertion {
     protected abstract void assertFalse(boolean condition, String message);
     protected  abstract void assertEquals(Object actual, Object expected, String message);
 
-    public void Equals(String actual, String expected, String message){
+    public BaseAssertion Equals(String actual, String expected, String message){
         assertEquals(actual, expected, message);
+        return this;
     }
     public void isElementVisible(By locator){
         boolean flag = waitManager.fluentWait().until(driver1 ->{
@@ -62,5 +64,14 @@ public abstract class BaseAssertion {
     public void assertPageTitle(String expectedTitle){
         String actualTitle = driver.getTitle();
         assertEquals(actualTitle, expectedTitle, "Page title mismatch. Expected: " + expectedTitle + ", Actual: " + actualTitle);
+    }
+
+    //verify that file exists
+    public void assertFileExists(String fileName, String message){
+
+        waitManager.fluentWait().until(
+                d -> FileUtils.isFileExists(fileName)
+        );
+        assertTrue(FileUtils.isFileExists(fileName), message);
     }
 }

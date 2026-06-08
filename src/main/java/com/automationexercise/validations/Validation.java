@@ -2,6 +2,7 @@ package com.automationexercise.validations;
 
 import com.automationexercise.utils.logs.LogsManager;
 import org.openqa.selenium.WebDriver;
+import org.testng.ITestResult;
 import org.testng.asserts.SoftAssert;
 
 // Soft Assertion
@@ -35,14 +36,15 @@ public class Validation extends BaseAssertion {
         softAssert.assertEquals(actual, expected, message);
     }
 
-    public static void assertAll(){
+    public static void assertAll(ITestResult result){
         if(!used) return; // If no assertions were made, do nothing
         try{
             softAssert.assertAll();
         }
         catch (AssertionError e){
             LogsManager.error("Assertion failed: " + e.getMessage());
-            throw e;
+            result.setStatus(ITestResult.FAILURE);
+            result.setThrowable(e);
         }
         finally {
             softAssert = new SoftAssert(); // Reset softAssert for the next test

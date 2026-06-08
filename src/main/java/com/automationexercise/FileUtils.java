@@ -90,4 +90,12 @@ public class FileUtils {
             LogsManager.error("Error copying directory: " + e.getMessage());
         }
     }
+
+    //Check if the file exists
+    public static boolean isFileExists(String path){
+        String downloadsPath = System.getProperty("user.dir") + File.separator + "src/test/resources/downloads/";
+        File file = new File(downloadsPath + path);
+        return file.exists();
+    }
+
 }

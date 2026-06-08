@@ -62,8 +62,12 @@ public class BrowserActions {
         WaitManager.fluentWait().until(d ->
                     driver.getWindowHandles().size() > 1
         );
+        for(String windowHandle : driver.getWindowHandles()){
+            if(!windowHandle.equals(currentWindowHandle)){
+                driver.switchTo().window(windowHandle).close();
+            }
+        }
         //then close the tab
-        driver.switchTo().window(driver.getWindowHandles().toArray()[1].toString()).close();
         driver.switchTo().window(currentWindowHandle);
         LogsManager.info("Extension tab closed");
     }

@@ -14,5 +14,6 @@ public abstract class AbstractDriver {
             new File("src/main/resources/extensions/PordaAI-Blur-Haram-objects-in-Images-and-Videos-SuperFast-Ai-for-Muslim-Chrome-Web-Store.crx"),
             new File("src/main/resources/extensions/AdGuard-AdBlocker.crx")
     );
+    protected String downloadsPath = System.getProperty("user.dir") + "\\src\\test\\resources\\downloads";
     public abstract WebDriver createDriver();
 }

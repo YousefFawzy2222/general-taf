@@ -1,6 +1,7 @@
 package com.automationexercise.listeners;
 
 import com.automationexercise.FileUtils;
+import com.automationexercise.drivers.UITest;
 import com.automationexercise.drivers.WebDriverProvider;
 import com.automationexercise.media.ScreenRecordManager;
 import com.automationexercise.media.ScreenshotsManager;
@@ -16,7 +17,10 @@ import org.testng.*;
 
 import java.io.File;
 
-public class TestNGListeners implements IExecutionListener, IInvokedMethodListener, ITestListener {
+public class TestNGListeners implements ISuiteListener,IExecutionListener, IInvokedMethodListener, ITestListener {
+    public void onStart(ISuite suite) {
+        suite.getXmlSuite().setName("Automation Exercise");
+    }
     @Override
     public void onExecutionStart() {
         PropertyReader.loadProperties();
@@ -55,8 +59,11 @@ public class TestNGListeners implements IExecutionListener, IInvokedMethodListen
     @Override
     public void beforeInvocation(IInvokedMethod method, ITestResult testResult, ITestContext context) {
         if (method.isTestMethod()) {
-            ScreenRecordManager.startRecording();
-            LogsManager.info("Started recording for test: " + method.getTestMethod().getMethodName());
+            if(testResult.getInstance() instanceof UITest){
+
+                ScreenRecordManager.startRecording();
+                LogsManager.info("Started recording for test: " + method.getTestMethod().getMethodName());
+            }
         }
     }
 
@@ -65,24 +72,25 @@ public class TestNGListeners implements IExecutionListener, IInvokedMethodListen
         WebDriver driver = null;
 
         if (method.isTestMethod()) {
-            if (testResult.getInstance() instanceof WebDriverProvider provider) {
-                driver = provider.getWebDriver();
+            if(testResult.getInstance() instanceof UITest){ //DON'T RECORD OR SCREENSHOT UNLESS ITS AN INSTANCE OF UITest annotation
+                if (testResult.getInstance() instanceof WebDriverProvider provider) {
+                    driver = provider.getWebDriver();
+                }
+                switch (testResult.getStatus()) {
+                    case ITestResult.SUCCESS ->
+                            ScreenshotsManager.takeFullPageScreenshot(driver, "passed-" + testResult.getName());
+                    case ITestResult.FAILURE ->
+                            ScreenshotsManager.takeFullPageScreenshot(driver, "failed-" + testResult.getName());
+                    case ITestResult.SKIP ->
+                            ScreenshotsManager.takeFullPageScreenshot(driver, "skipped-" + testResult.getName());
+                }
+                ScreenRecordManager.stopRecording(testResult.getName());
+                AllureAttahcmentManager.attachRecords(testResult.getName());
             }
 
-            switch (testResult.getStatus()) {
-                case ITestResult.SUCCESS ->
-                        ScreenshotsManager.takeFullPageScreenshot(driver, "passed-" + testResult.getName());
-                case ITestResult.FAILURE ->
-                        ScreenshotsManager.takeFullPageScreenshot(driver, "failed-" + testResult.getName());
-                case ITestResult.SKIP ->
-                        ScreenshotsManager.takeFullPageScreenshot(driver, "skipped-" + testResult.getName());
-            }
-
-            ScreenRecordManager.stopRecording(testResult.getName());
+            Validation.assertAll(testResult);
             AllureAttahcmentManager.attachLogs();
-            AllureAttahcmentManager.attachRecords(testResult.getName());
 
-            Validation.assertAll();
         }
     }
 
@@ -107,12 +115,14 @@ public class TestNGListeners implements IExecutionListener, IInvokedMethodListen
         FileUtils.cleanDirectory(AllureConstant.RESULTS_FOLDER.toFile());
         FileUtils.cleanDirectory(new File(ScreenshotsManager.SCREENSHOTS_PATH));
         FileUtils.cleanDirectory(new File(ScreenRecordManager.RECORDINGS_PATH));
+        FileUtils.cleanDirectory(new File("src/test/resources/downloads/"));
     }
 
     //screenshoots, recordings
     public void createTestOutputDirectories(){
         FileUtils.createDirectory(ScreenshotsManager.SCREENSHOTS_PATH);
         FileUtils.createDirectory(ScreenRecordManager.RECORDINGS_PATH);
+        FileUtils.createDirectory("src/test/resources/downloads/");
     }
 
 
